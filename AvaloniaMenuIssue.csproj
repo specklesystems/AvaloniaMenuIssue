@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <Version>1.0</Version>
+    <Title>AvaloniaMenuIssue</Title>
+    <Description>Description of AvaloniaMenuIssue</Description>
+    <TargetExt>.rhp</TargetExt>
+<!--    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>osx-x64</RuntimeIdentifier>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\**\*" />
+  </ItemGroup>
+
+   <ItemGroup Condition="'$([MSBuild]::IsOSPlatform(OSX))' == 'true'">
+    <None Include="$(HOME)/.nuget/packages/avalonia.native/0.10.18/runtimes/osx/native/libAvaloniaNative.dylib" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon" Version="7.13.21348.13001" IncludeAssets="compile;build" />
+    <PackageReference Include="Avalonia" Version="0.10.18" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="App.xaml" />
+    <None Remove="MainWindow.xaml" />
+     <AvaloniaXaml Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaXaml>
+     <AvaloniaXaml Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaXaml>
+   </ItemGroup>
+
+    <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+
+      <Compile Update="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+
+    </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="Avalonia" />
+    <None Remove="Avalonia.Desktop" />
+    <None Remove="Avalonia.Diagnostics" />
+  </ItemGroup>
+  <PropertyGroup Condition="$(Configuration) == 'Debug' AND $([MSBuild]::IsOSPlatform(Windows))">
+    <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>
+    <StartArguments></StartArguments>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+  
+</Project>
